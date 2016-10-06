@@ -39,7 +39,7 @@ uint8_t poti_send_led_data(uint8_t number, uint8_t leftvalue, uint8_t rightvalue
 	ledptrleft=&ledmergeleft;
 	ledptrright=&ledmergeright;
 
-	if(SPI1_BLOCK != SPI_BLOCK_FREE)
+	if(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		return 2;
 	}
@@ -134,25 +134,25 @@ uint8_t poti_send_led_data(uint8_t number, uint8_t leftvalue, uint8_t rightvalue
 	/*
 	 * Check whether the bus is free immediately before the transfer is startet
 	 */
-	if(SPI1_BLOCK != SPI_BLOCK_FREE)
+	if(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		return 2;
 	}
 	/* Quickly claim thebus */
-	SPI1_BLOCK = SPI_BUS_TRANSFER_STARTED;
+	GL_spi1_block = SPI_BUS_TRANSFER_STARTED;
 
 	switch(number)
 	{
 	case 1:
-		SPI1_BLOCK = SPI_POTILED1_WRITE_DATA;
+		GL_spi1_block = SPI_POTILED1_WRITE_DATA;
 		SPI1_send(36,SPI_POTILED1_WRITE_DATA, poti_data, rx_data);
 	break;
 	case 2:
-		SPI1_BLOCK = SPI_POTILED2_WRITE_DATA;
+		GL_spi1_block = SPI_POTILED2_WRITE_DATA;
 		SPI1_send(36,SPI_POTILED2_WRITE_DATA, poti_data, rx_data);
 	break;
 	case 3:
-		SPI1_BLOCK = SPI_POTILED3_WRITE_DATA;
+		GL_spi1_block = SPI_POTILED3_WRITE_DATA;
 		SPI1_send(36,SPI_POTILED3_WRITE_DATA, poti_data, rx_data);
 	break;
 	case 4:
@@ -160,7 +160,7 @@ uint8_t poti_send_led_data(uint8_t number, uint8_t leftvalue, uint8_t rightvalue
 		{
 			poti_data[i]=0x00;
 		}
-		SPI1_BLOCK = SPI_POTILED4_WRITE_DATA;
+		GL_spi1_block = SPI_POTILED4_WRITE_DATA;
 		SPI1_send(36,SPI_POTILED4_WRITE_DATA, poti_data, rx_data);
 	break;
 

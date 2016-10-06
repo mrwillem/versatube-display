@@ -24,15 +24,15 @@ uint8_t siebensegment_send_data(uint8_t code1, uint8_t code2, uint8_t code3)
 {
 	uint8_t i;
 	static uint8_t regdata[4];
-	if(SPI1_BLOCK != SPI_BLOCK_FREE)
+	if(GL_spi1_block != SPI_BLOCK_FREE)
 		return 2;
 	regdata[0]=SIEBENSEGMENT_CMD_DIGIT1;
 	regdata[1]= characters[asciitocharacter(code1)];
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 	regdata[2]=SIEBENSEGMENT_CMD_DIGIT2;
 	regdata[3]= characters[asciitocharacter(code2)];
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -44,11 +44,11 @@ uint8_t siebensegment_send_data(uint8_t code1, uint8_t code2, uint8_t code3)
 		}
 	}
 
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, &regdata[2], &regdata[2]);
 	regdata[0]=SIEBENSEGMENT_CMD_DIGIT3;
 	regdata[1]=characters[asciitocharacter(code3)];
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -60,7 +60,7 @@ uint8_t siebensegment_send_data(uint8_t code1, uint8_t code2, uint8_t code3)
 		}
 	}
 
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 	return 0;
 }
@@ -90,7 +90,7 @@ void siebensegment_config(void)
 	uint8_t regdata[2];
 	uint16_t* pointer;
 	uint8_t i;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -104,10 +104,10 @@ void siebensegment_config(void)
 
 	regdata[0]=SIEBENSEGMENT_CMD_FEATURE;
 	regdata[1]= (0x00 | SIEBENSEGMENT_FEATURE_DECODE_HEX | SIEBENSEGMENT_FEATURE_IF_SPI);
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -120,10 +120,10 @@ void siebensegment_config(void)
 	}
 	regdata[0]=SIEBENSEGMENT_CMD_SCANLIM;
 	regdata[1]= SIEBENSEGMENT_SCANLIM123;
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -136,10 +136,10 @@ void siebensegment_config(void)
 	}
 	regdata[0]=SIEBENSEGMENT_CMD_DECMODE;
 	regdata[1]=SIEBENSEGMENT_DECMODE_NODEC;
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -152,10 +152,10 @@ void siebensegment_config(void)
 	}
 	regdata[0]=SIEBENSEGMENT_CMD_SHDOWN;
 	regdata[1]= SIEBENSEGMENT_SHDOWN_NORMAL_FEATURE;
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -168,10 +168,10 @@ void siebensegment_config(void)
 	}
 	regdata[0]=SIEBENSEGMENT_CMD_DIGIT1;
 	regdata[1]= 0x03;
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -184,9 +184,9 @@ void siebensegment_config(void)
 	}
 	regdata[0]=SIEBENSEGMENT_CMD_DIGIT2;
 	regdata[1]= 0x03;
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(i<64)
 		{
@@ -199,7 +199,7 @@ void siebensegment_config(void)
 	}
 	regdata[0]=SIEBENSEGMENT_CMD_DIGIT3;
 	regdata[1]= 0x05;
-	SPI1_BLOCK = SPI_SIEBENSEGMENT_WRITE_DATA;
+	GL_spi1_block = SPI_SIEBENSEGMENT_WRITE_DATA;
 	SPI1_send(2,SPI_SIEBENSEGMENT_WRITE_DATA, regdata, regdata);
 
 }

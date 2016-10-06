@@ -196,7 +196,7 @@ int main(void)
 		{
 			if(systemevent & SYSEV_BLINKLEDON)
 			{
-				if(SPI1_BLOCK == SPI_BLOCK_FREE)
+				if(GL_spi1_block == SPI_BLOCK_FREE)
 				{
 					switch ( GL_led_displayreg[11] )
 					{
@@ -228,7 +228,7 @@ int main(void)
 			}
 			if(systemevent & SYSEV_BLINKLEDOFF)
 			{
-				if(SPI1_BLOCK == SPI_BLOCK_FREE)
+				if(GL_spi1_block == SPI_BLOCK_FREE)
 				{
 					switch ( GL_led_displayreg[11] )
 					{

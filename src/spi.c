@@ -4,7 +4,7 @@
 #include "siebensegment.h"
 #include "hw_config.h"
 
-volatile uint8_t SPI1_BLOCK;
+volatile uint8_t GL_spi1_block;
 volatile uint8_t GL_spi_send_call;
 volatile uint8_t GL_spi_irq_call;
 
@@ -64,7 +64,7 @@ uint8_t SPI1_send(uint8_t n_bytes, uint8_t periph, uint32_t txdata_address, uint
 		GPIO_WriteBit(CHANNELLED_CS_GPIO_PORT, CHANNELLED_CS_PIN, Bit_RESET);
 		GPIO_WriteBit(CHANNELLED_CS_GPIO_PORT, CHANNELLED_OE_PIN, Bit_SET);
 		GPIO_WriteBit(SIEBENSEGMENT_CS_GPIO_PORT, SIEBENSEGMENT_CS_PIN, Bit_RESET);
-		SPI1_BLOCK=SPI_BLOCK_FREE;
+		GL_spi1_block=SPI_BLOCK_FREE;
 		return 1;
 	break;
 	}
@@ -99,7 +99,7 @@ void SPI1_BusInit(void)
 	DMA_InitTypeDef DMA_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 
-	SPI1_BLOCK=SPI_BLOCK_FREE;
+	GL_spi1_block=SPI_BLOCK_FREE;
 
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
@@ -207,7 +207,7 @@ void spi_handleDMA1Ch2Interrupt(void)
 		DMA_ClearFlag(DMA1_FLAG_TC2);
 
 		/* Release or cycle Chip Select of currently addressed hardware */
-		switch( SPI1_BLOCK )
+		switch( GL_spi1_block )
 		{
 		case SPI_POTILED1_WRITE_DATA:
 			/* Toggle chip select of LED Controler shortly */
@@ -262,16 +262,16 @@ void spi_handleDMA1Ch2Interrupt(void)
 			GPIO_WriteBit(CHANNELLED_CS_GPIO_PORT, CHANNELLED_CS_PIN, Bit_RESET);
 			GPIO_WriteBit(CHANNELLED_CS_GPIO_PORT, CHANNELLED_OE_PIN, Bit_RESET);
 			GPIO_WriteBit(SIEBENSEGMENT_CS_GPIO_PORT, SIEBENSEGMENT_CS_PIN, Bit_SET);
-			SPI1_BLOCK=SPI_BLOCK_FREE;
+			GL_spi1_block=SPI_BLOCK_FREE;
 		break;
 		}
 
-		SPI1_BLOCK=SPI_BLOCK_FREE;
+		GL_spi1_block=SPI_BLOCK_FREE;
 	}
 	else
 	{
 		/* Should not get here */
-		SPI1_BLOCK=SPI_BLOCK_FREE;
+		GL_spi1_block=SPI_BLOCK_FREE;
 		/* Is it important to disable the SPI DMA hardware ?? 						*/
 		/* SPI_I2S_DMACmd(SPI1, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, DISABLE);	*/
 		DMA_Cmd(DMA1_Channel2, DISABLE);

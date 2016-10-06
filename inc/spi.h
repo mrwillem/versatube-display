@@ -18,7 +18,7 @@
 #define SPI_CHANNELLED_WRITE_DATA 15
 #define SPI_SIEBENSEGMENT_WRITE_DATA 16
 
-extern volatile uint8_t SPI1_BLOCK;
+extern volatile uint8_t GL_spi1_block;
 extern volatile uint8_t GL_spi_send_call;
 extern volatile uint8_t GL_spi_irq_call;
 

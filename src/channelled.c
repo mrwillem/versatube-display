@@ -6,13 +6,13 @@ uint8_t channel_send_led_data(uint8_t data)
 {
 	uint8_t i, j;
 	static uint16_t txdata, rxdata;
-	if(SPI1_BLOCK != SPI_BLOCK_FREE)
+	if(GL_spi1_block != SPI_BLOCK_FREE)
 		return 2;
-	SPI1_BLOCK = SPI_BUS_TRANSFER_STARTED;
+	GL_spi1_block = SPI_BUS_TRANSFER_STARTED;
 	if(data >12)
 		data=1;
 	txdata = __REV16(channel_led_lookup[data]);
-	SPI1_BLOCK = SPI_CHANNELLED_WRITE_DATA;
+	GL_spi1_block = SPI_CHANNELLED_WRITE_DATA;
 	SPI1_send(2,SPI_CHANNELLED_WRITE_DATA, &txdata, &rxdata);
 	return 0;
 }
