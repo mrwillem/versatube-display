@@ -145,7 +145,11 @@ void SysTick_Handler(void)
 {
 }*/
 
-void DMA1_Channel2_IRQHandler(void){
+void DMA1_Channel2_IRQHandler(void)
+{
+	/* Debug Stuff only..
+	 * GL_spi_irg_call is increased each time the interrupt is fired
+	 */
 	if(GL_spi_irq_call < 128)
 	{
 		GL_spi_irq_call++;
@@ -155,7 +159,6 @@ void DMA1_Channel2_IRQHandler(void){
 		GL_spi_irq_call=0;
 	}
 	spi_handleDMA1Ch2Interrupt();
-	DMA_ClearFlag(DMA1_FLAG_TC2);
 }
 
 void DMA1_Channel1_IRQHandler(void){

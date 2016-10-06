@@ -149,9 +149,9 @@ void pushbuttoninit(void)
 	DMA_Init(DMA1_Channel1, &DMA_InitStructure);
 
 	DMA_Cmd(DMA1_Channel1, ENABLE);
-	DMA_ITConfig(DMA1_Channel2, DMA_IT_TC, DISABLE);
-	DMA_ITConfig(DMA1_Channel2, DMA_IT_HT, DISABLE);
-	DMA_ITConfig(DMA1_Channel2, DMA_IT_TE, DISABLE);
+	DMA_ITConfig(DMA1_Channel1, DMA_IT_TC, DISABLE);
+	DMA_ITConfig(DMA1_Channel1, DMA_IT_HT, DISABLE);
+	DMA_ITConfig(DMA1_Channel1, DMA_IT_TE, DISABLE);
 
 	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel1_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;
