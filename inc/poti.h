@@ -1,0 +1,93 @@
+#ifndef POTI_H
+#define POTI_H
+
+extern const uint8_t left_poti[64][18];
+extern const uint8_t right_poti[64][18];
+extern const uint8_t ledpower[64][12];
+extern volatile uint16_t ledvalue[20];
+
+extern const int8_t rotarytable[4][4];
+extern volatile uint8_t rotaryportstateA;
+extern volatile uint8_t rotaryportstateB;
+extern volatile uint8_t prevrotaryportstateA;
+extern volatile uint8_t prevrotaryportstateB;
+
+extern volatile uint8_t READROTARY;
+
+extern volatile uint8_t GL_potvalue[7];
+void poti_led_init(void);
+uint8_t poti_send_led_data(uint8_t, uint8_t, uint8_t);
+void poti_value_init(uint8_t , uint16_t * );
+
+
+void poti_encoder_init(void);
+void read_encoder_ports(void);
+void Input_IRQHandler();
+
+
+#define POTILED1_CS_PERIPH RCC_APB2Periph_GPIOB
+#define POTILED2_CS_PERIPH RCC_APB2Periph_GPIOB
+#define POTILED3_CS_PERIPH RCC_APB2Periph_GPIOB
+#define POTILED4_CS_PERIPH RCC_APB2Periph_GPIOC
+#define POTILED_BLANK_PERIPH RCC_APB2Periph_GPIOB
+
+#define POTILED1_CS_PIN GPIO_Pin_11
+#define POTILED1_CS_GPIO_PORT GPIOB
+#define POTILED2_CS_PIN GPIO_Pin_1
+#define POTILED2_CS_GPIO_PORT GPIOB
+#define POTILED3_CS_PIN GPIO_Pin_0
+#define POTILED3_CS_GPIO_PORT GPIOB
+#define POTILED4_CS_PIN GPIO_Pin_5
+#define POTILED4_CS_GPIO_PORT GPIOC
+#define POTILED_BLANK_PIN GPIO_Pin_10
+#define POTILED_BLANK_GPIO_PORT GPIOB
+
+#define POTIENCODER1A_PERIPH RCC_APB2Periph_GPIOB
+#define POTIENCODER1B_PERIPH RCC_APB2Periph_GPIOB
+#define POTIENCODER2A_PERIPH RCC_APB2Periph_GPIOB
+#define POTIENCODER2B_PERIPH RCC_APB2Periph_GPIOB
+#define POTIENCODER3A_PERIPH RCC_APB2Periph_GPIOC
+#define POTIENCODER3B_PERIPH RCC_APB2Periph_GPIOC
+#define POTIENCODER4A_PERIPH RCC_APB2Periph_GPIOC
+#define POTIENCODER4B_PERIPH RCC_APB2Periph_GPIOC
+#define POTIENCODER5A_PERIPH RCC_APB2Periph_GPIOA
+#define POTIENCODER5B_PERIPH RCC_APB2Periph_GPIOA
+#define POTIENCODER6A_PERIPH RCC_APB2Periph_GPIOA
+#define POTIENCODER6B_PERIPH RCC_APB2Periph_GPIOA
+#define POTIENCODER7A_PERIPH RCC_APB2Periph_GPIOA
+#define POTIENCODER7B_PERIPH RCC_APB2Periph_GPIOB
+
+#define POTIENCODER1A_GPIO_PORT GPIOB
+#define POTIENCODER1B_GPIO_PORT GPIOB
+#define POTIENCODER2A_GPIO_PORT GPIOB
+#define POTIENCODER2B_GPIO_PORT GPIOB
+#define POTIENCODER3A_GPIO_PORT GPIOC
+#define POTIENCODER3B_GPIO_PORT GPIOC
+#define POTIENCODER4A_GPIO_PORT GPIOC
+#define POTIENCODER4B_GPIO_PORT GPIOC
+#define POTIENCODER5A_GPIO_PORT GPIOA
+#define POTIENCODER5B_GPIO_PORT GPIOA
+#define POTIENCODER6A_GPIO_PORT GPIOA
+#define POTIENCODER6B_GPIO_PORT GPIOA
+#define POTIENCODER7A_GPIO_PORT GPIOA
+#define POTIENCODER7B_GPIO_PORT GPIOB
+
+#define POTIENCODER1A_PIN GPIO_Pin_12
+#define POTIENCODER1B_PIN GPIO_Pin_13
+#define POTIENCODER2A_PIN GPIO_Pin_14
+#define POTIENCODER2B_PIN GPIO_Pin_15
+#define POTIENCODER3A_PIN GPIO_Pin_6
+#define POTIENCODER3B_PIN GPIO_Pin_7
+#define POTIENCODER4A_PIN GPIO_Pin_8
+#define POTIENCODER4B_PIN GPIO_Pin_9
+#define POTIENCODER5A_PIN GPIO_Pin_8
+#define POTIENCODER5B_PIN GPIO_Pin_9
+#define POTIENCODER6A_PIN GPIO_Pin_10
+#define POTIENCODER6B_PIN GPIO_Pin_11
+#define POTIENCODER7A_PIN GPIO_Pin_12
+#define POTIENCODER7B_PIN GPIO_Pin_9
+
+
+
+
+#endif //POTI_H
