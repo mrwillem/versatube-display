@@ -148,7 +148,6 @@ void SPI1_BusInit(void)
 	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
 	DMA_Init(DMA1_Channel2, &DMA_InitStructure);
 
-	DMA_ITConfig(DMA1_Channel2, DMA_IT_TC, ENABLE);
 
 	// DMA Channel 3 - SPI TX
 	DMA_InitStructure.DMA_BufferSize = 0;
@@ -165,10 +164,13 @@ void SPI1_BusInit(void)
 	DMA_Init(DMA1_Channel3, &DMA_InitStructure);
 
 	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
+
+	DMA_ITConfig(DMA1_Channel2, DMA_IT_TC, ENABLE);
+
 
 }
 

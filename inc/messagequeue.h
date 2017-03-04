@@ -7,6 +7,7 @@
 #define MSG_CHANNELLED 4
 #define MSG_SEGMENT 5
 #define MSG_LEDVALUES 6
+#define MSG_SYSREADY 7
 
 #define MSG_POTILEFT 16
 #define MSG_POTIRIGHT 32

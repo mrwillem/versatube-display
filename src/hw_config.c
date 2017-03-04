@@ -39,7 +39,9 @@ void NVIC_Configuration(void)
   /* Set the Vector Table base location at 0x08000000 */
   NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
 #endif
-NVIC_SetPriority(SysTick_IRQn, 0x0B);
+
+NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+NVIC_SetPriority(SysTick_IRQn, 0xFF);
 }
 
 /*******************************************************************************

@@ -358,8 +358,8 @@ void poti_encoder_init(void)
     /* Enable the Timer Interrupt */
     NVIC_InitTypeDef nvicStructure;
     nvicStructure.NVIC_IRQChannel = TIM4_IRQn;
-    nvicStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
-    nvicStructure.NVIC_IRQChannelSubPriority = 0x0;
+    nvicStructure.NVIC_IRQChannelPreemptionPriority = 3;
+    nvicStructure.NVIC_IRQChannelSubPriority = 1;
     nvicStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvicStructure);
 

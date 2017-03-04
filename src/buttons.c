@@ -15,6 +15,7 @@ void update_buttons(void)
 	uint8_t i;
 	static uint16_t buttonbounce[9];
 	static uint16_t buttontrigger;
+
 	//1
 	if((ADCBuffer[0] > 1000) && (ADCBuffer[0] < 1600))
 	{
@@ -43,7 +44,7 @@ void update_buttons(void)
 		buttonbounce[2] = (buttonbounce[2] << 1) & 0b1111111111111110;
 	}
 	//4
-	if((ADCBuffer[1] > 300) && (ADCBuffer[0] < 900))
+	if((ADCBuffer[1] > 300) && (ADCBuffer[1] < 900))
 	{
 		buttonbounce[3] = (buttonbounce[3] << 1) | 0x01;
 	}
@@ -52,7 +53,7 @@ void update_buttons(void)
 		buttonbounce[3] = (buttonbounce[3] << 1) & 0b1111111111111110;
 	}
 	//5
-	if((ADCBuffer[1] > 900) && (ADCBuffer[0] < 1490))
+	if((ADCBuffer[1] > 900) && (ADCBuffer[1] < 1490))
 	{
 		buttonbounce[4] = (buttonbounce[4] << 1) | 0x01;
 	}
@@ -61,7 +62,7 @@ void update_buttons(void)
 		buttonbounce[4] = (buttonbounce[4] << 1) & 0b1111111111111110;
 	}
 	//6
-	if((ADCBuffer[1] > 1490) && (ADCBuffer[0] < 1990))
+	if((ADCBuffer[1] > 1490) && (ADCBuffer[1] < 1990))
 	{
 		buttonbounce[5] = (buttonbounce[5] << 1) | 0x01;
 	}
@@ -70,7 +71,7 @@ void update_buttons(void)
 		buttonbounce[5] = (buttonbounce[5] << 1) & 0b1111111111111110;
 	}
 	//7
-	if((ADCBuffer[1] > 1990) && (ADCBuffer[0] < 2760))
+	if((ADCBuffer[1] > 1990) && (ADCBuffer[1] < 2760))
 	{
 		buttonbounce[6] = (buttonbounce[6] << 1) | 0x01;
 	}
@@ -79,7 +80,7 @@ void update_buttons(void)
 		buttonbounce[6] = (buttonbounce[6] << 1) & 0b1111111111111110;
 	}
 	//8
-	if((ADCBuffer[1] > 2760) && (ADCBuffer[0] < 3600))
+	if((ADCBuffer[1] > 2760) && (ADCBuffer[1] < 3600))
 	{
 		buttonbounce[7] = (buttonbounce[7] << 1) | 0x01;
 	}
@@ -88,7 +89,7 @@ void update_buttons(void)
 		buttonbounce[7] = (buttonbounce[7] << 1) & 0b1111111111111110;
 	}
 	//9
-	if((ADCBuffer[1] > 3600) && (ADCBuffer[0] < 5000))
+	if((ADCBuffer[1] > 3600) && (ADCBuffer[1] < 5000))
 	{
 		buttonbounce[8] = (buttonbounce[8] << 1) | 0x01;
 	}
@@ -154,8 +155,8 @@ void pushbuttoninit(void)
 	DMA_ITConfig(DMA1_Channel1, DMA_IT_TE, DISABLE);
 
 	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 

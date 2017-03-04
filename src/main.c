@@ -138,12 +138,11 @@ int main(void)
 
 	siebensegment_config();
 
+
 	/* Next configure the I2C interface */
 	I2C_InterruptInit();
 	I2C_LowLevel_Init(I2C1);
 	I2C_Slave_BufferReadWrite(I2C1);
-
-
 
 
 
@@ -155,15 +154,51 @@ int main(void)
 	 * finally initialize the i2c message queue before going into the main loop
 	 */
 	messagequeue_init();
+
+	/* Set System Status Variable to Sysinit */
+	systemevent=SYSEV_SYSINIT;
+
 	/*
 	 * Send welcome message to controller board to indicate the system is set up.
 	 */
-	//message_create(uint8_t msgtype, uint8_t value);
+	message_create(MSG_SYSREADY, MSG_SYSREADY);
 
-	/*
-	 * Next is to trigger an interrupt for the host system and to wait
-	 * for an i2c read that
+
+
+	/* The next is to wait for an answer from the controller board that indicates the controller
+	 * is also properly setup
 	 */
+	/*
+	while(systemevent & SYSEV_SYSINIT)
+	{
+		/* SYSEV_READINPUTS is set every few microseconds */
+		/* This assures that we don't wait forever if the Controller board did not get the Interrupt */
+		/*
+		if( systemevent & SYSEV_READINPUTS )
+		{
+			messagequeue_update_i2c_buffers();
+			systemevent= (systemevent & (~SYSEV_READINPUTS));
+		}
+		if( systemevent & SYSEV_I2CRXCOMPLETE)
+		{
+			if(Buffer_Rx1[0] == I2C_MESSAGE_ACKNO)
+			{
+				messagequeue_i2crx_handler();
+			}
+			/* The first message that we should get are display brightness values */
+			/*else if(Buffer_Rx1[0] == I2C_MESSAGE_BRIGHTNESS)
+			{
+				if(Buffer_Rx[1]=10)
+				for(i=0; i<10;i++)
+				{
+					potivalvector[i]=Buffer_Rx[2+i]
+				}
+				poti_value_init(10, potivalvector);
+				systemevent = (systemevent | SYSEV_SYSINIT);
+			}
+			systemevent= (systemevent & (~SYSEV_I2CRXCOMPLETE));
+
+		}*/
 	potivalvector[0]=0;
 	potivalvector[1]=1;
 	potivalvector[2]=3;
@@ -174,7 +209,10 @@ int main(void)
 	potivalvector[7]=24;
 	potivalvector[8]=34;
 	potivalvector[9]=48;
-	poti_value_init(10,potivalvector);
+	poti_value_init(10, potivalvector);
+
+
+
 
 	/* Set the default values of the LEDs at the Rotary encoders and enable the LEDS*/
 	while(poti_send_led_data(1,0,0)!=0);
@@ -184,10 +222,8 @@ int main(void)
 	GPIO_WriteBit(POTILED_BLANK_GPIO_PORT, POTILED_BLANK_PIN, Bit_RESET);
 
 
-
-
-
-
+	message_create(MSG_BUTTONPRESS, 1);
+	message_create(MSG_BUTTONPRESS, 1);
 
 	/* Infinite main loop */
 	while (1)
@@ -317,12 +353,12 @@ int main(void)
 					continue;
 				}
 			}
+			/* The next code block is executed every xxx ms */
 			if( systemevent & SYSEV_READINPUTS )
 			{
 				read_encoder_ports();
 				update_buttons();
 				messagequeue_update_i2c_buffers();
-				systemevent= (systemevent & (~SYSEV_READINPUTS));
 				tmp=GPIO_ReadOutputDataBit(POTILED1_CS_GPIO_PORT, POTILED1_CS_PIN);
 				tmp=GPIO_ReadOutputDataBit(POTILED2_CS_GPIO_PORT, POTILED2_CS_PIN);
 				tmp=GPIO_ReadOutputDataBit(POTILED3_CS_GPIO_PORT, POTILED3_CS_PIN);
@@ -330,6 +366,7 @@ int main(void)
 				tmp=GPIO_ReadOutputDataBit(CHANNELLED_CS_GPIO_PORT, CHANNELLED_CS_PIN);
 				tmp=GPIO_ReadOutputDataBit(CHANNELLED_CS_GPIO_PORT, CHANNELLED_OE_PIN);
 				tmp=GPIO_ReadOutputDataBit(SIEBENSEGMENT_CS_GPIO_PORT, SIEBENSEGMENT_CS_PIN);
+				systemevent= (systemevent & (~SYSEV_READINPUTS));
 				continue;
 			}
 		}
@@ -354,6 +391,7 @@ int main(void)
 				{
 					messagequeue_i2crx_handler();
 				}
+
 				systemevent= (systemevent & (~SYSEV_I2CRXCOMPLETE));
 				systemevent = (systemevent | SYSEV_REFRESHDISPLAY);
 			}
@@ -384,8 +422,8 @@ void InitializeTimer()
     /* Enable the Timer Interrupt */
     NVIC_InitTypeDef nvicStructure;
     nvicStructure.NVIC_IRQChannel = TIM3_IRQn;
-    nvicStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
-    nvicStructure.NVIC_IRQChannelSubPriority = 0x0;
+    nvicStructure.NVIC_IRQChannelPreemptionPriority = 3;
+    nvicStructure.NVIC_IRQChannelSubPriority = 2;
     nvicStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvicStructure);
 
@@ -429,6 +467,13 @@ void Timer_Setup(void)
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down;
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
     TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+    /* Configure the Timer Interrupt */
+    NVIC_InitTypeDef nvicStructure;
+    nvicStructure.NVIC_IRQChannel = TIM2_IRQn;
+    nvicStructure.NVIC_IRQChannelPreemptionPriority = 3;
+    nvicStructure.NVIC_IRQChannelSubPriority = 3;
+    nvicStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&nvicStructure);
     //TIM_Cmd(TIM2,ENABLE);
 }
 
